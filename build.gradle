@@ -16,6 +16,10 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
+        maven {
+            url "https://maven.springframework.org/release"
+        }
         google()
         jcenter()
     }
