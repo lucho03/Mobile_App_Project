@@ -40,6 +40,11 @@ class UploadActivity : AppCompatActivity() {
             //Render
         }
 
+        locationButton = findViewById(R.id.locationButton)
+        locationButton.setOnClickListener {
+            launchGallery()
+        }
+
         sendButton = findViewById(R.id.sendButton)
         sendButton.setOnClickListener {
             uploadImage()
