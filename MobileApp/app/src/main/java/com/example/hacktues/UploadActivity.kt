@@ -37,12 +37,12 @@ class UploadActivity : AppCompatActivity() {
 
         take_photoButton = findViewById(R.id.take_photoButton)
         take_photoButton.setOnClickListener {
-            //Render
+            setContentView(R.layout.camera_interface)
         }
 
         locationButton = findViewById(R.id.locationButton)
         locationButton.setOnClickListener {
-            launchGallery()
+            setContentView(R.layout.activity_maps)
         }
 
         sendButton = findViewById(R.id.sendButton)
