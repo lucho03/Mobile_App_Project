@@ -116,7 +116,7 @@ def report():
                     destination = '/trash/{filename}'
                     img_path = f'/trash/{filename}'
                 shutil.move(source, destination)
-                
+
                 dest = shutil.move(source, destination)
 
                 report = Report(
@@ -154,5 +154,3 @@ def get_trash(filename):
     image = cv2.imread(path)
     trash = tfnet.return_predict(imgcv)
     return trash
-
-
