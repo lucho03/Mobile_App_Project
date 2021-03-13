@@ -1,0 +1,2 @@
+com/example/hacktues/BuildConfig.java
+ com.example.hacktues.BuildConfig
