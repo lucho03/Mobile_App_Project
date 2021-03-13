@@ -38,6 +38,7 @@ class UploadActivity : AppCompatActivity() {
         take_photoButton = findViewById(R.id.take_photoButton)
         take_photoButton.setOnClickListener {
             setContentView(R.layout.camera_interface)
+
         }
 
         locationButton = findViewById(R.id.locationButton)
