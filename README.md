@@ -11,7 +11,7 @@ Trash Locator
 git clone https://github.com/lucho03/Mobile_App_Project
 ```
 ### For the Mobile Application
-View [README.md](https://github.com/lucho03/Mobile_App_Project/MobileApp/README.md) in Mobile App directory
+View [README.md](https://github.com/lucho03/Mobile_App_Project/blob/master/MobileApp/README.md) in Mobile App directory
 
 ### For the Web Server
-View [README.md](https://github.com/lucho03/Mobile_App_Project/Server/README.md) in Server directory
+View [README.md](https://github.com/lucho03/Mobile_App_Project/blob/master/Server/README.md) in Server directory
