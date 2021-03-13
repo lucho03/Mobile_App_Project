@@ -98,13 +98,9 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
-        if (hasNoPermissions()) {
-            requestPermission()
-        }else{
-            fotoapparat
-                    ?.takePicture()
-                    ?.saveToFile(dest)
-        }
+        fotoapparat
+             ?.takePicture()
+             ?.saveToFile(dest)
     }
 
     override fun onStart() {
