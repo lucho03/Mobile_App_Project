@@ -41,6 +41,7 @@ class UploadActivity : AppCompatActivity() {
 
         }
 
+
         locationButton = findViewById(R.id.locationButton)
         locationButton.setOnClickListener {
             setContentView(R.layout.activity_maps)

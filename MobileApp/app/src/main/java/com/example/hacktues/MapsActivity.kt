@@ -2,6 +2,7 @@ package com.example.hacktues
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,10 +19,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val backButton: Button = findViewById(R.id.goBackButton)
+        backButton.setOnClickListener() {
+            setContentView(R.layout.login_page)
+        }
+
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        /*val goBackButton: Button = findViewById(R.id.goBackButton)
+        goBackButton.setOnClickListener {
+            println("Back button")
+            setContentView(R.layout.login_page)
+        }*/
     }
 
     /**

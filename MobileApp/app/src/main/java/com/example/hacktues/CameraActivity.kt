@@ -25,6 +25,7 @@ import java.io.File
 
 
 
+
 class CameraActivity : AppCompatActivity() {
     var fotoapparat : Fotoapparat? = null
     val filename = "test.png"
