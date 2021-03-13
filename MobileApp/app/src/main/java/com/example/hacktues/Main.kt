@@ -8,8 +8,8 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
-        val button: Button = findViewById(R.id.map)
-        button.setOnClickListener(){
+        val button1: Button = findViewById(R.id.map)
+        button1.setOnClickListener(){
             setContentView(R.layout.activity_maps)
         }
     }
