@@ -11,14 +11,15 @@
         android:id="@+id/camera_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/fab_camera"/>
+        android:layout_above="@id/fab_camera"
+        tools:ignore="MissingClass" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:fabSize="normal"
-        android:src="@drawable/ic_camera"
+        android:src="@drawable/common_google_signin_btn_icon_dark_focused"
         android:layout_alignParentBottom="true"
         android:layout_margin="32dp"
         android:layout_centerHorizontal="true"
@@ -29,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:fabSize="normal"
-        android:src="@drawable/ic_flash"
+        android:src="@drawable/common_google_signin_btn_icon_dark"
         android:layout_alignParentBottom="true"
         android:layout_margin="32dp"
         app:backgroundTint="@android:color/white"/>
@@ -39,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:fabSize="normal"
-        android:src="@drawable/ic_switch_camera"
+        android:src="@drawable/common_google_signin_btn_icon_light"
         android:layout_alignParentBottom="true"
         android:layout_margin="32dp"
         android:layout_alignParentRight="true"
