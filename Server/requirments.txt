@@ -3,6 +3,5 @@ Flask-SQLAlchemy
 flask-login
 numpy==1.19.2
 opencv-python==4.5.1.48
-tensorflow-gpu==1.14.0
-cython
+tensorflow==1.14.0
 werkzeug
