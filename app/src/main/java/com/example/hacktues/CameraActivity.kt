@@ -20,6 +20,7 @@ import io.fotoapparat.parameter.ScaleType
 import io.fotoapparat.selector.*
 import io.fotoapparat.view.CameraView
 import kotlinx.android.synthetic.main.*
+import kotlinx.android.synthetic.main.camera_interface.*
 import java.io.File
 
 
@@ -45,7 +46,7 @@ class CameraActivity : AppCompatActivity() {
         flashState = FlashState.OFF
         fotoapparatState = FotoapparatState.OFF
 
-        /*fab_camera.setOnClickListener {
+        fab_camera.setOnClickListener {
             takePhoto()
         }
 
@@ -55,7 +56,7 @@ class CameraActivity : AppCompatActivity() {
 
         fab_flash.setOnClickListener {
             changeFlashState()
-        }*/
+        }
     }
 
     private fun createFotoapparat(){
