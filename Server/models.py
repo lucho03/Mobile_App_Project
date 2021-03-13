@@ -48,6 +48,8 @@ class Report(Base):
     photo = Column(String(80), nullable=False)
     description = Column(String(100), nullable=True)
     location = Column(String(80), nullable=False)
+    confirm_trash = Column(Enum('trash','non_trash'), nullable=False)
+    trash = Column(String(200), nullable=True)
 
     user_id = Column(Integer, ForeignKey('User.id', ondelete="CASCADE"))
     user = relationship("User", back_populates="report")
