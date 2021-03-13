@@ -23,6 +23,9 @@ from utils import validate_file_type
 from flask.json import jsonify
 import json
 
+from darkflow.net.build import TFNet
+import cv2
+import shutil
 
 app = Flask(__name__)
 
@@ -100,14 +103,31 @@ def report():
 
             if validate_file_type(filename, ["jpeg", "jpg", "png"]):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    
+                source = f'/uploads/{filename}'
+
+                trash_items = get_trash(filename)
+                if trash_items is None:
+                    confirm_trash = "non_trash"
+                    destination = '/nontrash/{filename}'
+                    img_path = f'/nontrash/{filename}'
+                else: 
+                    confirm_trash = "trash"
+                    destination = '/trash/{filename}'
+                    img_path = f'/trash/{filename}'
+                shutil.move(source, destination)
+                
+                dest = shutil.move(source, destination)
 
                 report = Report(
-                    photo=f'/uploads/{filename}',
+                    photo=img_path,
                     user_id=current_user.id,
                     description=description,
-                    location=location)
-
+                    location=location,
+                    confirm_trash=confirm_trash,
+                    )
                 db_session.add(report)
+
             else:
                 return jsonify("Invalid photo format")
     else:
@@ -126,4 +146,13 @@ def logout():
     logout_user()
 
     return jsonify("Success")
+
+def get_trash(filename):
+    config = {"model": "cfg/tiny-yolo-voc-13c.cfg", "load": "cfg/tiny-yolo-voc-13c.pb", "threshold": 0.4}
+    tfnet = TFNet(config)
+    path = f'/uploads/{filename}'
+    image = cv2.imread(path)
+    trash = tfnet.return_predict(imgcv)
+    return trash
+
 
