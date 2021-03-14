@@ -22,6 +22,7 @@ from models import User, Company, Report
 from utils import validate_file_type
 from flask.json import jsonify
 import json
+from datetime import datetime
 
 from darkflow.net.build import TFNet
 import cv2
@@ -137,6 +138,50 @@ def report():
 
     return jsonify("Success")
 
+@app.route('/report_test', methods=['POST'])
+def report_test():
+    #description = request.form['description']
+    #location = request.form['location']
+    print("here")
+    print(request.files)
+    if 'imageFile' in request.files and request.files['imageFile']:
+            print("here2")
+            file = request.files['imageFile']
+            filename = file.filename
+            filename = filename + "_" + str(datetime.now()) + '.jpeg'
+            filename = secure_filename(filename)
+            print(filename)
+            print(file.__dict__)
+            if validate_file_type(filename, ["jpeg", "jpg", "png"]):
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                source = f'/uploads/{filename}'
+                
+                trash_items = get_trash(filename)
+                if trash_items is None:
+                    confirm_trash = "non_trash"
+                    img_path = f'/nontrash/{filename}'
+                else: 
+                    confirm_trash = "trash"
+                    img_path = f'/trash/{filename}'
+                shutil.move(source, img_path)
+                
+                report = Report(
+                    photo=img_path,
+                    user_id=1,
+                    description=" ",
+                    location=" ",
+                    confirm_trash=confirm_trash
+                    )
+                db_session.add(report)
+
+            else:
+                return jsonify("Invalid photo format")
+    else:
+        return jsonify("No photo")
+
+    db_session.commit()
+
+    return jsonify(msg="Success")
 
 @app.route('/logout')
 @login_required
