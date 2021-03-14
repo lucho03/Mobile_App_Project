@@ -1,0 +1,13 @@
+glass_bottle
+plastic bottle
+plastic
+cardboard bottle
+cardboard_cup
+cardboard
+can
+lid
+cigarette
+straw
+battery
+paper
+jar
