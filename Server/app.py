@@ -49,14 +49,14 @@ def shutdown_context(exception=None):
 
 
 @app.route('/')
-def home():
+def homepage():
     reports = Report.query.all()
 
-    return render_template("index.html", reports=reports)
+    return render_template("home.html", reports=reports)
 
 
-@app.route('/register', methods=['POST'])
-def register():
+@app.route('/_register', methods=['POST'])
+def register_mobile():
     if 'login_id' in current_user.__dict__:
         return jsonify("Already logged")
 
@@ -71,8 +71,26 @@ def register():
     return jsonify("Registered successfully")
 
 
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if 'login_id' in current_user.__dict__:
+        return redirect(url_for('homepage'))
+
+    if request.method == 'GET':
+        return render_template("register.html")
+    else:
+        username = request.form['username']
+        password = generate_password_hash(request.form['password'])
+
+        user = User(username=username, password=password)
+        db_session.add(user)
+        db_session.commit()
+
+        return redirect(url_for('login'))
+
+
+@app.route('/_login', methods=['POST'])
+def login_mobile():
     if 'login_id' in current_user.__dict__:
         return jsonify("Already logged")
 
@@ -89,6 +107,26 @@ def login():
         return jsonify("Success")
     else:
         return jsonify("Error")
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if 'login_id' in current_user.__dict__:
+        return redirect(url_for('homepage'))
+
+    response = None
+    if request.method == 'GET':
+        response = make_response(render_template('login.html'))
+    else:
+        response = make_response(redirect(url_for('homepage')))
+
+        user = User.query.filter_by(username=request.form['username']).first()
+        if user and check_password_hash(user.password,
+                                        request.form['password']):
+            user.login_id = str(uuid.uuid4())
+            db_session.commit()
+            login_user(user)
+    return response
 
 
 @app.route('/report', methods=['POST'])
@@ -133,6 +171,16 @@ def report():
     return jsonify(msg="Success")
 
 
+@app.route('/_logout')
+@login_required
+def logout_mobile():
+    current_user.login_id = None
+    db_session.commit()
+    logout_user()
+
+    return jsonify("Success")
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -140,7 +188,47 @@ def logout():
     db_session.commit()
     logout_user()
 
-    return jsonify("Success")
+    return redirect(url_for("homepage"))
+
+
+@app.route('/add_report', methods=['GET', 'POST'])
+@login_required
+def add_report():
+    if request.method == 'GET':
+        return render_template("add_report.html")
+    else:
+        location = request.form['location']
+        description = request.form['description']
+
+    if 'imageFile' in request.files and request.files['imageFile']:
+        file = request.files['imageFile']
+        filename = file.filename
+        filename = secure_filename(filename)
+        if validate_file_type(filename, ["jpeg", "jpg", "png"]):
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            source = f'uploads/{filename}'
+
+            trash_items = get_trash(filename)
+            if trash_items == []:
+                confirm_trash = "non_trash"
+                img_path = f'nontrash/{filename}'
+            else:
+                confirm_trash = "trash"
+                img_path = f'trash/{filename}'
+            shutil.move(source, img_path)
+            report = Report(
+                photo=source,
+                user_id=current_user.id,
+                description=description,
+                location=location,
+                confirm_trash="trash"
+            )
+            db_session.add(report)
+
+    db_session.commit()
+
+
+    return redirect(url_for('homepage'))
 
 
 def get_trash(filename):

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="mt-5">
+    {% if not reports %}
+    <div class="row justify-content-center">
+        <div class="cold-md-3">
+            <h1>There are no reports currently. Why don't you add one?</h1>
+            {% if 'login_id' not in current_user.__dict__ %}
+            <br>
+            <div class = "text-center mt-5">
+                <h2 class = "text-center mb-4">Then sign up for Trash Locator now!</h2>
+                <a class="btn btn-outline-info my-2 my-sm-0 mx-1" style = "font-size: x-large;" href="/register">Sign up</a>
+            </div>
+            {% endif %}
+        </div>
+        {% if 'login_id' in current_user.__dict__ %}
+        <div class = "text-center mt-5">
+            <a href="/add_report" style="font-size: 2rem; color: cornflowerblue;">
+                Add a report 
+                <i class="bi bi-plus-circle-fill"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    {% if 'login_id' in current_user.__dict__ %}
+    <div>
+        <a href="/add_report" style="font-size: 2rem; color: cornflowerblue;">
+            Add a report
+            <i class="bi bi-plus-circle-fill"></i>
+        </a>
+    </div>
+    {% endif %}
+    <div class="list-group mt-3">
+        <ul class="list-group">
+        {% for report in reports %}
+        <li class="list-group-item">
+            <h4>{{ report.location }}</h4>
+            <h6 id="description" class="form-text text-muted">{{ report.description }}</h6>
+        </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
