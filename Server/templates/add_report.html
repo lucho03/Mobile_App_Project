@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %} Add topic {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-5 mx-auto align-middle">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h5 class="card-title">Add a new report</h5>
+                
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="InputTopicTitle">Location</label>
+                        <input type="text" class="form-control" name="location" id="InputTopicTitle" placeholder="Enter location / address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputTopicDesc">Description</label>
+                        <textarea class="form-control" name="description" id="InputTopicDesc" placeholder="Description (not required)" maxlength="256"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputImage">Description</label>
+                        <input type="file" class="form-control" name="imageFile" id="InputImage" placeholder="Enter topic title" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
