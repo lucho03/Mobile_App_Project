@@ -76,7 +76,6 @@ def login():
     if 'login_id' in current_user.__dict__:
         return jsonify("Already logged")
 
-
     username = request.form['username']
     password = request.form['password']
 
@@ -91,47 +90,48 @@ def login():
     else:
         return jsonify("Error")
 
+
 @app.route('/report', methods=['POST'])
 def report():
-    #description = request.form['description']
-    #location = request.form['location']
+    # description = request.form['description']
+    # location = request.form['location']
     if 'imageFile' in request.files and request.files['imageFile']:
+        file = request.files['imageFile']
+        filename = file.filename
+        filename = filename + "_" + str(datetime.now()) + '.jpeg'
+        filename = secure_filename(filename)
+        if validate_file_type(filename, ["jpeg", "jpg", "png"]):
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            source = f'uploads/{filename}'
 
-            file = request.files['imageFile']
-            filename = file.filename
-            filename = filename + "_" + str(datetime.now()) + '.jpeg'
-            filename = secure_filename(filename)
-            if validate_file_type(filename, ["jpeg", "jpg", "png"]):
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                source = f'uploads/{filename}'
-                
-                trash_items = get_trash(filename)
-                if trash_items == []:
-                    confirm_trash = "non_trash"
-                    img_path = f'nontrash/{filename}'
-                else: 
-                    confirm_trash = "trash"
-                    img_path = f'trash/{filename}'
-                shutil.move(source, img_path)
-                
-                report = Report(
-                    photo=img_path,
-                    user_id=1,
-                    description=" ",
-                    location=" ",
-                    confirm_trash=confirm_trash
-                    )
-                db_session.add(report)
-
+            trash_items = get_trash(filename)
+            if trash_items == []:
+                confirm_trash = "non_trash"
+                img_path = f'nontrash/{filename}'
             else:
-                return jsonify("Invalid photo format")
-                
+                confirm_trash = "trash"
+                img_path = f'trash/{filename}'
+            shutil.move(source, img_path)
+
+            report = Report(
+                photo=img_path,
+                user_id=1,
+                description=" ",
+                location=" ",
+                confirm_trash=confirm_trash
+            )
+            db_session.add(report)
+
+        else:
+            return jsonify("Invalid photo format")
+
     else:
         return jsonify("No photo")
 
     db_session.commit()
 
     return jsonify(msg="Success")
+
 
 @app.route('/logout')
 @login_required
@@ -142,8 +142,10 @@ def logout():
 
     return jsonify("Success")
 
+
 def get_trash(filename):
-    options = {"metaLoad": "built_graph/tiny-yolo-voc-13c.meta", "pbLoad": "built_graph/tiny-yolo-voc-13c.pb", "threshold": 0.3}
+    options = {"metaLoad": "built_graph/tiny-yolo-voc-13c.meta",
+               "pbLoad": "built_graph/tiny-yolo-voc-13c.pb", "threshold": 0.3}
     tfnet = TFNet(options)
     path = f'uploads/{filename}'
     imgcv = cv2.imread(path)
