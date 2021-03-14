@@ -21,7 +21,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val backButton: Button = findViewById(R.id.goBackButton)
         backButton.setOnClickListener() {
-            setContentView(R.layout.login_page)
+            setContentView(R.layout.send_image)
         }
 
         val mapFragment = supportFragmentManager
